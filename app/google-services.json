@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "343068683036",
+    "project_id": "cheirinhodecafe-3993d",
+    "storage_bucket": "cheirinhodecafe-3993d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343068683036:android:5f5760bde783339c78a8d9",
+        "android_client_info": {
+          "package_name": "br.com.yuriduarte.cheirinhodecafe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqq68vK9kwcuMimqA9mjp1EjyXlgywjtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
