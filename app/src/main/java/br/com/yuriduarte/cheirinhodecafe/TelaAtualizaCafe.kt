@@ -32,7 +32,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import br.com.jeffersonbm.fazenda02.DAO
@@ -40,6 +39,7 @@ import br.com.yuriduarte.cheirinhodecafe.EnumNota.Doce
 import br.com.yuriduarte.cheirinhodecafe.EnumNota.Especiarias
 import br.com.yuriduarte.cheirinhodecafe.EnumNota.Floral
 import br.com.yuriduarte.cheirinhodecafe.EnumNota.Frutado
+import br.com.yuriduarte.cheirinhodecafe.ui.theme.CheirinhoDeCaféTheme
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 
@@ -48,7 +48,9 @@ class TelaAtualizaCafe : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AtualizaCafe(intent)
+            CheirinhoDeCaféTheme {
+                AtualizaCafe(intent)
+            }
         }
     }
 }
@@ -77,16 +79,15 @@ fun AtualizaCafe(intent: Intent){
 
     var preco by remember { mutableStateOf("") }
 
-    Log.i("Teste", "Até aqui vai")
-
     val id = intent.getStringExtra("idcafe")
     nome = intent.getStringExtra("nome").toString()
     nota = toEnumNota(intent.getStringExtra("nota").toString())
 
-    //aroma = intent.getStringExtra("aroma").toString().toInt()
-    //acidez = intent.getStringExtra("acidez").toString().toInt()
-    //amargor = intent.getStringExtra("amargor").toString().toInt()
-    //sabor = intent.getStringExtra("sabor").toString().toInt()
+    // TODO: Achar uma forma de inicializar
+    //aroma = notas[intent.getStringExtra("aroma").toString().toInt() - 1]
+    //acidez = notas[intent.getStringExtra("acidez").toString().toInt()  - 1]
+    //amargor = notas[intent.getStringExtra("amargor").toString().toInt() - 1]
+    //sabor = notas[intent.getStringExtra("sabor").toString().toInt() - 1]
 
     preco = intent.getStringExtra("preco").toString()
 

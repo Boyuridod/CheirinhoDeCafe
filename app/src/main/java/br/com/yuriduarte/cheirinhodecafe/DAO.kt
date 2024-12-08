@@ -10,12 +10,15 @@ import com.google.gson.Gson
 
 class DAO (banco : DatabaseReference){
     var banco : DatabaseReference
+
     init{
         this.banco = banco
     }
+
     fun inserir_atualizar(cafe: Cafe){
         this.banco.child(cafe.id).setValue(cafe)
     }
+
     fun mostrarDados(callback: (ArrayList<Cafe>) -> Unit) {
         val listaCafe = ArrayList<Cafe>()
         this.banco.addValueEventListener(object : ValueEventListener {
@@ -36,6 +39,30 @@ class DAO (banco : DatabaseReference){
             }
         })
     }
+
+    fun getId(callback: (String) -> Unit){
+        val listaCafe = ArrayList<Int>()
+        this.banco.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val gson = Gson()
+                    for (i in snapshot.children) {
+                        val json = gson.toJson(i.value)
+                        val cafe = gson.fromJson(json, Cafe::class.java)
+
+                        listaCafe.add(cafe.id.toInt())
+                    }
+                }
+
+                callback(listaCafe.size.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.i("Teste", "Erro: $error")
+            }
+        })
+    }
+
     /*fun mostrarDados(callback: (ArrayList<String>) -> Unit) {
         val listaFazendas = ArrayList<String>()
 

@@ -57,6 +57,14 @@ fun TelaDeInsercao() {
 
     val banco = DAO(Firebase.database.getReference("Cafe"))
 
+    var id by remember { mutableStateOf("") }
+
+    banco.getId { idcafe->
+        id = idcafe
+    }
+
+    Log.i("Teste", "O ID será " + id)
+
     var nome by remember { mutableStateOf("") }
 
     // Lista de opções do enum
@@ -247,11 +255,15 @@ fun TelaDeInsercao() {
                     onClick = {
 
                         try {
-                            val cafe = Cafe("Teste", nome, nota, aroma, acidez, amargor, sabor, preco.toDouble())
+                            val cafe = Cafe(id, nome, nota, aroma, acidez, amargor, sabor, preco.toDouble())
 
                             banco.inserir_atualizar(cafe)
 
                             Log.i("Teste", "Inserido")
+
+                            id = banco.getId(){}.toString()
+
+                            Log.i("Teste", "O ID será " + id)
 
                             nome = ""
                             nota = opcoes[0]

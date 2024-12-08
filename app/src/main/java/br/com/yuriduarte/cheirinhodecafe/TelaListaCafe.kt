@@ -61,6 +61,7 @@ fun TelaListaCafes(){
     val contexto = LocalContext.current
     val intentAtualiza = Intent(contexto, TelaAtualizaCafe::class.java)
 
+    //TODO: Entender como mostrar a lista toda
 
     Scaffold (
         Modifier.fillMaxHeight()
@@ -86,7 +87,7 @@ fun TelaListaCafes(){
                         intentAtualiza.putExtra("acidez", cafe.acidez)
                         intentAtualiza.putExtra("amargor", cafe.amargor)
                         intentAtualiza.putExtra("sabor", cafe.sabor)
-                        intentAtualiza.putExtra("preco", cafe.preco)
+                        intentAtualiza.putExtra("preco", cafe.preco.toString())
                         //Log.i("Teste", "Mandei o id" + cafe.id)
                         try {
                             contexto.startActivity(intentAtualiza)
