@@ -1,7 +1,7 @@
 package br.com.yuriduarte.cheirinhodecafe
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,21 +15,25 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.com.jeffersonbm.fazenda02.DAO
 import br.com.yuriduarte.cheirinhodecafe.ui.theme.CheirinhoDeCaféTheme
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 
-class MainActivity : ComponentActivity() {
+class TelaListaCafe : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             CheirinhoDeCaféTheme {
 
-                TelaInicial()
+                TelaListaCafes()
 
             }
         }
@@ -37,57 +41,49 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TelaInicial(){
+fun TelaListaCafes(){
 
-    val contexto = LocalContext.current
+    val banco = DAO(Firebase.database.getReference("Cafe"))
+
+    var listaCafe by remember { mutableStateOf<List<String>>(emptyList()) }
+
+    banco.mostrarDados { lista ->
+        if (lista.isNotEmpty()) {
+            Log.i("TesteCafe", "Deu bom " + lista[0])
+            listaCafe = lista // Atualiza o estado da lista
+        } else {
+            Log.i("TesteCafe", "Lista vazia ou erro no carregamento")
+        }
+    }
 
     Scaffold (
         Modifier.fillMaxHeight()
     ){
-        paddingValues ->
+            paddingValues ->
         Column (
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .padding(paddingValues),
-            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ){
-            Button(
-                onClick = {
 
-                    val intentTelaInserir = Intent(contexto, TelaInsercao::class.java)
-                    contexto.startActivity(intentTelaInserir)
+            listaCafe.forEach { cafe ->
 
-                },
-                shape = RoundedCornerShape(5.dp)
-            ) {
-
-                Text("Iserir Café")
-
+                Button(
+                    onClick = {
+                        //TODO
+                    },
+                    shape = RoundedCornerShape(5.dp),
+                    modifier = Modifier.padding(start = 20.dp, end = 20.dp)
+                ) {
+                    Text(text = cafe)
+                }
+                Log.i("TesteCafe", "Inseri " + cafe)
             }
 
-            Button(
-                onClick = {
-                    val intentTelaLista = Intent(contexto, TelaListaCafe::class.java)
-                    contexto.startActivity(intentTelaLista)
-                },
-                shape = RoundedCornerShape(5.dp)
-            ) {
-
-                Text("Lista de Cafés")
-
-            }
         }
 
     }
-
-}
-
-@Composable
-@Preview
-fun MostraTelaInicial(){
-
-    TelaInicial()
 
 }

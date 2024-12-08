@@ -13,6 +13,16 @@
         android:theme="@style/Theme.CheirinhoDeCafé"
         tools:targetApi="31">
         <activity
+            android:name=".AtualizaCafe"
+            android:exported="false"
+            android:label="@string/title_activity_atualiza_cafe"
+            android:theme="@style/Theme.CheirinhoDeCafé" />
+        <activity
+            android:name=".TelaListaCafe"
+            android:exported="false"
+            android:label="@string/title_activity_tela_lista_cafe"
+            android:theme="@style/Theme.CheirinhoDeCafé" />
+        <activity
             android:name=".TelaInsercao"
             android:exported="false"
             android:label="@string/title_activity_tela_insercao"

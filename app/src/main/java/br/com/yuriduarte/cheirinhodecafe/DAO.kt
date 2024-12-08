@@ -16,29 +16,26 @@ class DAO (banco : DatabaseReference){
     fun inserir_atualizar(cafe: Cafe){
         this.banco.child(cafe.id).setValue(cafe)
     }
-    /*fun mostrarDados(): ArrayList<String>{
-        var listaFazendas = ArrayList<String>()
-        listaFazendas.add("Olá Coutinho")
+    fun mostrarDados(callback: (ArrayList<String>) -> Unit) {
+        val listaCafe = ArrayList<String>()
         this.banco.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     val gson = Gson()
-                    Log.i("TESTE","------")
                     for (i in snapshot.children) {
                         val json = gson.toJson(i.value)
-                        val fazenda = gson.fromJson(json, Fazenda::class.java)
-                        listaFazendas.add(fazenda.toString())
-                        Log.i("TESTE","Fazenda: "+fazenda.toString())
+                        val cafe = gson.fromJson(json, Cafe::class.java)
+                        listaCafe.add(cafe.toString())
                     }
-                    Log.i("TESTE","------")
+                    callback(listaCafe) // Retorna a lista carregada pelo callback
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
                 Log.i("Teste", "Erro: $error")
             }
         })
-        return(listaFazendas)
-    }*/
+    }
     /*fun mostrarDados(callback: (ArrayList<String>) -> Unit) {
         val listaFazendas = ArrayList<String>()
 

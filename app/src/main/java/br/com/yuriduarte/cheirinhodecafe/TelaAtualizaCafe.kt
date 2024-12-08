@@ -32,28 +32,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.jeffersonbm.fazenda02.DAO
-import br.com.yuriduarte.cheirinhodecafe.ui.theme.CheirinhoDeCaféTheme
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 
-class TelaInsercao : ComponentActivity() {
+class TelaAtualizaCafe : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            CheirinhoDeCaféTheme {
-                TelaDeInsercao()
-            }
+            AtualizaCafe()
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TelaDeInsercao() {
+fun AtualizaCafe(){
 
     val banco = DAO(Firebase.database.getReference("Cafe"))
 
@@ -61,7 +57,7 @@ fun TelaDeInsercao() {
 
     // Lista de opções do enum
     val opcoes = EnumNota.entries
-    var nota by remember {mutableStateOf(opcoes[0])}
+    var nota by remember { mutableStateOf(opcoes[0]) }
 
     var expandido by remember { mutableStateOf(false) }
 
@@ -75,10 +71,20 @@ fun TelaDeInsercao() {
 
     var preco by remember { mutableStateOf("") }
 
+    val cafe = Cafe(1.toString(), nome, nota, aroma, acidez, amargor, sabor, preco.toDouble()) // TODO: Receber da tela anterior
+
+    nome = ""
+    nota = opcoes[0]
+    aroma = notas[0]
+    acidez = notas[0]
+    amargor = notas[0]
+    sabor = notas[0]
+    preco = ""
+
     Scaffold (
         Modifier.fillMaxHeight()
     ){
-        paddingValues ->
+            paddingValues ->
         Column (
             modifier = Modifier
                 .fillMaxWidth()
@@ -91,8 +97,8 @@ fun TelaDeInsercao() {
             OutlinedTextField(
                 value = nome,
                 onValueChange = {nome = it},
-                label = { Text("Nome")},
-                placeholder = { Text("Digite aqui")}
+                label = { Text("Nome") },
+                placeholder = { Text("Digite aqui") }
             )
 
             ExposedDropdownMenuBox(
@@ -237,8 +243,8 @@ fun TelaDeInsercao() {
             OutlinedTextField(
                 value = preco,
                 onValueChange = {preco = it},
-                label = { Text("Preço")},
-                placeholder = { Text("Digite aqui")},
+                label = { Text("Preço") },
+                placeholder = { Text("Digite aqui") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
@@ -251,15 +257,7 @@ fun TelaDeInsercao() {
 
                             banco.inserir_atualizar(cafe)
 
-                            Log.i("Teste", "Inserido")
-
-                            nome = ""
-                            nota = opcoes[0]
-                            aroma = notas[0]
-                            acidez = notas[0]
-                            amargor = notas[0]
-                            sabor = notas[0]
-                            preco = ""
+                            Log.i("Teste", "Atualizado")
                         }
 
                         catch (e: Exception){
@@ -273,10 +271,5 @@ fun TelaDeInsercao() {
 
         }
     }
-}
 
-@Preview
-@Composable
-fun PreviewTelaDeInsercao() {
-    TelaDeInsercao()
 }

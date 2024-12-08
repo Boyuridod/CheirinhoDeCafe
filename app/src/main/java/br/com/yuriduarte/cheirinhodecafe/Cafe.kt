@@ -22,4 +22,9 @@ class Cafe(id : String, nome : String, nota : EnumNota, aroma : Int, acidez : In
         this.preco = preco
     }
 
+    override fun toString(): String {
+        return ("[" + id + "] Nome: " + nome + " nota de: " + nota.toString() + " aroma: " + aroma.toString() + " acidez: " +
+                acidez.toString() + " amargor: " + amargor.toString() + " sabor: " + sabor.toString() + " preço: " + preco.toString())
+    }
+
 }
