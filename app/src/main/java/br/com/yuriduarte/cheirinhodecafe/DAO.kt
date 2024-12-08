@@ -16,8 +16,8 @@ class DAO (banco : DatabaseReference){
     fun inserir_atualizar(cafe: Cafe){
         this.banco.child(cafe.id).setValue(cafe)
     }
-    fun mostrarDados(callback: (ArrayList<String>) -> Unit) {
-        val listaCafe = ArrayList<String>()
+    fun mostrarDados(callback: (ArrayList<Cafe>) -> Unit) {
+        val listaCafe = ArrayList<Cafe>()
         this.banco.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -25,7 +25,7 @@ class DAO (banco : DatabaseReference){
                     for (i in snapshot.children) {
                         val json = gson.toJson(i.value)
                         val cafe = gson.fromJson(json, Cafe::class.java)
-                        listaCafe.add(cafe.toString())
+                        listaCafe.add(cafe)
                     }
                     callback(listaCafe) // Retorna a lista carregada pelo callback
                 }

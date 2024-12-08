@@ -1,5 +1,6 @@
 package br.com.yuriduarte.cheirinhodecafe
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -31,9 +32,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import br.com.jeffersonbm.fazenda02.DAO
+import br.com.yuriduarte.cheirinhodecafe.EnumNota.Doce
+import br.com.yuriduarte.cheirinhodecafe.EnumNota.Especiarias
+import br.com.yuriduarte.cheirinhodecafe.EnumNota.Floral
+import br.com.yuriduarte.cheirinhodecafe.EnumNota.Frutado
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 
@@ -42,14 +48,14 @@ class TelaAtualizaCafe : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AtualizaCafe()
+            AtualizaCafe(intent)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AtualizaCafe(){
+fun AtualizaCafe(intent: Intent){
 
     val banco = DAO(Firebase.database.getReference("Cafe"))
 
@@ -71,15 +77,18 @@ fun AtualizaCafe(){
 
     var preco by remember { mutableStateOf("") }
 
-    val cafe = Cafe(1.toString(), nome, nota, aroma, acidez, amargor, sabor, preco.toDouble()) // TODO: Receber da tela anterior
+    Log.i("Teste", "Até aqui vai")
 
-    nome = ""
-    nota = opcoes[0]
-    aroma = notas[0]
-    acidez = notas[0]
-    amargor = notas[0]
-    sabor = notas[0]
-    preco = ""
+    val id = intent.getStringExtra("idcafe")
+    nome = intent.getStringExtra("nome").toString()
+    nota = toEnumNota(intent.getStringExtra("nota").toString())
+
+    //aroma = intent.getStringExtra("aroma").toString().toInt()
+    //acidez = intent.getStringExtra("acidez").toString().toInt()
+    //amargor = intent.getStringExtra("amargor").toString().toInt()
+    //sabor = intent.getStringExtra("sabor").toString().toInt()
+
+    preco = intent.getStringExtra("preco").toString()
 
     Scaffold (
         Modifier.fillMaxHeight()
@@ -253,11 +262,13 @@ fun AtualizaCafe(){
                     onClick = {
 
                         try {
-                            val cafe = Cafe("Teste", nome, nota, aroma, acidez, amargor, sabor, preco.toDouble())
+                            val cafe = Cafe(id.toString(), nome, nota, aroma, acidez, amargor, sabor, preco.toDouble())
 
                             banco.inserir_atualizar(cafe)
 
-                            Log.i("Teste", "Atualizado")
+                            Log.i("Teste", "Atualizado " + id)
+
+                            finish()
                         }
 
                         catch (e: Exception){
@@ -265,11 +276,26 @@ fun AtualizaCafe(){
                         }
                     }
                 ) {
-                    Text("Inserir")
+                    Text("Atualizar")
                 }
             }
 
         }
     }
 
+}
+
+fun finish() {
+    finish()
+}
+
+fun toEnumNota(nota: String): EnumNota{
+    if (nota == "Doce")
+        return Doce
+    else if (nota == "Floral")
+        return Floral
+    else if (nota == "Frutado")
+        return Frutado
+    else
+        return Especiarias
 }
