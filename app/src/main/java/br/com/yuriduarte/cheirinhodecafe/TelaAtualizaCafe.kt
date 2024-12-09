@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -32,9 +33,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import br.com.jeffersonbm.fazenda02.DAO
 import br.com.yuriduarte.cheirinhodecafe.EnumNota.Doce
 import br.com.yuriduarte.cheirinhodecafe.EnumNota.Especiarias
 import br.com.yuriduarte.cheirinhodecafe.EnumNota.Floral
@@ -258,7 +259,11 @@ fun AtualizaCafe(intent: Intent){
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
-            Row {
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ){
                 Button(
                     onClick = {
 
@@ -278,6 +283,22 @@ fun AtualizaCafe(intent: Intent){
                     }
                 ) {
                     Text("Atualizar")
+                }
+
+                Button(
+                    onClick = {
+                        if (id != null) {
+                            banco.excluir(id)
+
+                            finish()
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red, // Cor de fundo do botão
+                        contentColor = Color.White // Cor do texto ou conteúdo do botão
+                    )
+                ) {
+                    Text("Excluir")
                 }
             }
 

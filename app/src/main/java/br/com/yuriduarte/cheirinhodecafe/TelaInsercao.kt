@@ -34,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.jeffersonbm.fazenda02.DAO
 import br.com.yuriduarte.cheirinhodecafe.ui.theme.CheirinhoDeCaféTheme
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
@@ -56,14 +55,9 @@ class TelaInsercao : ComponentActivity() {
 fun TelaDeInsercao() {
 
     val banco = DAO(Firebase.database.getReference("Cafe"))
+    val bancoid = DAO(Firebase.database.getReference("nextId"))
 
     var id by remember { mutableStateOf("") }
-
-    banco.getId { idcafe->
-        id = idcafe
-    }
-
-    Log.i("Teste", "O ID será " + id)
 
     var nome by remember { mutableStateOf("") }
 
@@ -244,7 +238,14 @@ fun TelaDeInsercao() {
 
             OutlinedTextField(
                 value = preco,
-                onValueChange = {preco = it},
+                onValueChange = { input ->
+                    // Permite apenas números e um ponto decimal
+                    val filteredInput = input.filter { it.isDigit() || it == '.' }
+                    // Evita múltiplos pontos no número
+                    if (filteredInput.count { it == '.' } <= 1) {
+                        preco = filteredInput
+                    }
+                },
                 label = { Text("Preço")},
                 placeholder = { Text("Digite aqui")},
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -255,23 +256,27 @@ fun TelaDeInsercao() {
                     onClick = {
 
                         try {
-                            val cafe = Cafe(id, nome, nota, aroma, acidez, amargor, sabor, preco.toDouble())
+                            bancoid.getId { nid ->
+                                id = nid
+                                Log.i("Teste", "Seeeeei bobo: " + id)
 
-                            banco.inserir_atualizar(cafe)
+                                val cafe = Cafe(id, nome, nota, aroma, acidez, amargor, sabor, preco.toDouble())
 
-                            Log.i("Teste", "Inserido")
+                                banco.inserir_atualizar(cafe)
 
-                            id = banco.getId(){}.toString()
+                                Log.i("Teste", "Inserido")
 
-                            Log.i("Teste", "O ID será " + id)
+                                nome = ""
+                                nota = opcoes[0]
+                                aroma = notas[0]
+                                acidez = notas[0]
+                                amargor = notas[0]
+                                sabor = notas[0]
+                                preco = ""
 
-                            nome = ""
-                            nota = opcoes[0]
-                            aroma = notas[0]
-                            acidez = notas[0]
-                            amargor = notas[0]
-                            sabor = notas[0]
-                            preco = ""
+                                finish()
+                            }
+
                         }
 
                         catch (e: Exception){

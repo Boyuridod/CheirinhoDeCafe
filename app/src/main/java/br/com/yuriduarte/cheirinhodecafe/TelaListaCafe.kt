@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
@@ -23,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import br.com.jeffersonbm.fazenda02.DAO
 import br.com.yuriduarte.cheirinhodecafe.ui.theme.CheirinhoDeCaféTheme
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
@@ -67,16 +68,15 @@ fun TelaListaCafes(){
         Modifier.fillMaxHeight()
     ){
             paddingValues ->
-        Column (
+        LazyColumn (
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .padding(paddingValues),
-            verticalArrangement = Arrangement.SpaceEvenly
+                .padding(paddingValues).padding(top = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(30.dp) // Espaçamento entre os botões
         ){
 
-            listaCafe.forEach { cafe ->
-
+            items(listaCafe) { cafe ->
                 Button(
                     onClick = {
                         //TODO
@@ -88,12 +88,21 @@ fun TelaListaCafes(){
                         intentAtualiza.putExtra("amargor", cafe.amargor)
                         intentAtualiza.putExtra("sabor", cafe.sabor)
                         intentAtualiza.putExtra("preco", cafe.preco.toString())
-                        //Log.i("Teste", "Mandei o id" + cafe.id)
+
                         try {
                             contexto.startActivity(intentAtualiza)
                         }
                         catch (err: Exception){
                             Log.e("Teste", err.toString())
+                        }
+
+                        banco.mostrarDados { lista ->
+                            if (lista.isNotEmpty()) {
+                                //Log.i("TesteCafe", "Deu bom ")
+                                listaCafe = lista // Atualiza o estado da lista
+                            } else {
+                                Log.i("TesteCafe", "Lista vazia ou erro no carregamento")
+                            }
                         }
                     },
                     shape = RoundedCornerShape(5.dp),
