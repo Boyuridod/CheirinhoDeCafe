@@ -53,8 +53,8 @@ O seu programa deve ser capaz de:
 
 * **Disciplina:** Programação Para Dispositivos Móveis
 * **Curso:** Engenharia de Computação
-* **Instituição:** Instituto Federal de Educação, Ciência e Tecnologia do Triângulo Mineiro – Campus Uberlândia Pontal (IFTM UPT)
-* **Aluno:** Yuri Duarte
+* **Instituição:** Instituto Federal de Educação, Ciência e Tecnologia do Triângulo Mineiro – Campus Uberaba Parque Tecnológico (IFTM CUPT)
+* **Aluno:** Yuri David Silva Duarte
 * **Professor:** Jefferson Beethoven Martins
 * **Semestre:** 8° Período (2024/2)
 
